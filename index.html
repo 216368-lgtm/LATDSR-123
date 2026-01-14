@@ -1,7 +1,309 @@
-<html>
-  <tittle>latihan sabian html<tittle>
-    <body>
-      <a4> ini latihan saya di depan komputer
-      </a4>
-    </body>
-  </tittle>
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Berita Hari Ini</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&amp;family=Open+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        .headline-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .headline-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+        
+        .news-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .news-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+        }
+        
+        .category-badge {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app" class="w-full h-full overflow-auto"></div>
+  <script>
+        const defaultConfig = {
+            background_color: "#f8f9fa",
+            surface_color: "#ffffff",
+            text_color: "#1a1a1a",
+            primary_action_color: "#c92a2a",
+            secondary_action_color: "#364fc7",
+            font_family: "Merriweather",
+            font_size: 16,
+            site_title: "Berita Hari Ini",
+            tagline: "Informasi Terkini dan Terpercaya",
+            headline_title: "Perkembangan Teknologi AI Mengubah Dunia Kerja Modern",
+            headline_description: "Studi terbaru menunjukkan bahwa implementasi kecerdasan buatan telah mengubah cara kerja di berbagai industri, membuka peluang baru sekaligus tantangan dalam dunia profesional.",
+            news1_title: "Ekonomi Digital Indonesia Terus Berkembang",
+            news1_description: "Nilai ekonomi digital Indonesia diprediksi mencapai rekor baru tahun ini dengan pertumbuhan signifikan di sektor e-commerce dan fintech.",
+            news2_title: "Kebijakan Lingkungan Baru Diterapkan",
+            news2_description: "Pemerintah mengumumkan serangkaian kebijakan baru untuk mengurangi emisi karbon dan mendorong penggunaan energi terbarukan.",
+            news3_title: "Inovasi Kesehatan Digital Semakin Populer",
+            news3_description: "Aplikasi kesehatan digital menjadi solusi utama masyarakat dalam mengakses layanan medis dengan lebih mudah dan efisien."
+        };
+
+        async function onConfigChange(config) {
+            const app = document.getElementById('app');
+            const customFont = config.font_family || defaultConfig.font_family;
+            const baseFontStack = 'Open Sans, system-ui, sans-serif';
+            const titleFontStack = `${customFont}, Georgia, serif`;
+            const baseSize = config.font_size || defaultConfig.font_size;
+            
+            const backgroundColor = config.background_color || defaultConfig.background_color;
+            const surfaceColor = config.surface_color || defaultConfig.surface_color;
+            const textColor = config.text_color || defaultConfig.text_color;
+            const primaryColor = config.primary_action_color || defaultConfig.primary_action_color;
+            const secondaryColor = config.secondary_action_color || defaultConfig.secondary_action_color;
+
+            const siteTitle = config.site_title || defaultConfig.site_title;
+            const tagline = config.tagline || defaultConfig.tagline;
+            const headlineTitle = config.headline_title || defaultConfig.headline_title;
+            const headlineDescription = config.headline_description || defaultConfig.headline_description;
+            const news1Title = config.news1_title || defaultConfig.news1_title;
+            const news1Description = config.news1_description || defaultConfig.news1_description;
+            const news2Title = config.news2_title || defaultConfig.news2_title;
+            const news2Description = config.news2_description || defaultConfig.news2_description;
+            const news3Title = config.news3_title || defaultConfig.news3_title;
+            const news3Description = config.news3_description || defaultConfig.news3_description;
+
+            const currentDate = new Date().toLocaleDateString('id-ID', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            app.innerHTML = `
+                <div style="background-color: ${backgroundColor}; min-height: 100%; font-family: ${baseFontStack};">
+                    <!-- Header -->
+                    <header style="background-color: ${surfaceColor}; border-bottom: 3px solid ${primaryColor}; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                        <div style="max-width: 1200px; margin: 0 auto; padding: 24px 20px;">
+                            <h1 style="font-family: ${titleFontStack}; font-size: ${baseSize * 2.5}px; font-weight: 900; color: ${textColor}; margin: 0 0 8px 0; letter-spacing: -0.02em;">
+                                ${siteTitle}
+                            </h1>
+                            <p style="font-size: ${baseSize * 0.9}px; color: ${textColor}; opacity: 0.7; margin: 0; font-weight: 400;">
+                                ${tagline}
+                            </p>
+                            <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid rgba(0,0,0,0.1);">
+                                <span style="font-size: ${baseSize * 0.85}px; color: ${textColor}; opacity: 0.6; font-weight: 600;">
+                                    📅 ${currentDate}
+                                </span>
+                            </div>
+                        </div>
+                    </header>
+
+                    <!-- Main Content -->
+                    <main style="max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
+                        <!-- Headline News -->
+                        <article class="headline-card" style="background-color: ${surfaceColor}; border-radius: 12px; overflow: hidden; margin-bottom: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+                            <div style="background: linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%); padding: 8px 16px;">
+                                <span class="category-badge" style="color: white; font-size: ${baseSize * 0.75}px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
+                                    🔥 BERITA UTAMA
+                                </span>
+                            </div>
+                            <div style="padding: 32px;">
+                                <h2 style="font-family: ${titleFontStack}; font-size: ${baseSize * 2}px; font-weight: 700; color: ${textColor}; margin: 0 0 16px 0; line-height: 1.3;">
+                                    ${headlineTitle}
+                                </h2>
+                                <p style="font-size: ${baseSize * 1.1}px; color: ${textColor}; opacity: 0.8; line-height: 1.7; margin: 0;">
+                                    ${headlineDescription}
+                                </p>
+                                <button style="margin-top: 24px; background-color: ${primaryColor}; color: white; padding: 12px 32px; border: none; border-radius: 6px; font-size: ${baseSize}px; font-weight: 600; cursor: pointer; transition: all 0.2s ease;" 
+                                        onmouseover="this.style.backgroundColor='${primaryColor}dd'; this.style.transform='scale(1.05)'" 
+                                        onmouseout="this.style.backgroundColor='${primaryColor}'; this.style.transform='scale(1)'">
+                                    Baca Selengkapnya →
+                                </button>
+                            </div>
+                        </article>
+
+                        <!-- News Grid -->
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
+                            <!-- News Card 1 -->
+                            <article class="news-card" style="background-color: ${surfaceColor}; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                                <div style="background-color: ${secondaryColor}; padding: 6px 12px;">
+                                    <span style="color: white; font-size: ${baseSize * 0.7}px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        💼 EKONOMI
+                                    </span>
+                                </div>
+                                <div style="padding: 24px;">
+                                    <h3 style="font-family: ${titleFontStack}; font-size: ${baseSize * 1.3}px; font-weight: 700; color: ${textColor}; margin: 0 0 12px 0; line-height: 1.4;">
+                                        ${news1Title}
+                                    </h3>
+                                    <p style="font-size: ${baseSize * 0.95}px; color: ${textColor}; opacity: 0.75; line-height: 1.6; margin: 0;">
+                                        ${news1Description}
+                                    </p>
+                                    <a href="#" style="display: inline-block; margin-top: 16px; color: ${secondaryColor}; font-size: ${baseSize * 0.9}px; font-weight: 600; text-decoration: none;" 
+                                       onmouseover="this.style.textDecoration='underline'" 
+                                       onmouseout="this.style.textDecoration='none'">
+                                        Selengkapnya →
+                                    </a>
+                                </div>
+                            </article>
+
+                            <!-- News Card 2 -->
+                            <article class="news-card" style="background-color: ${surfaceColor}; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                                <div style="background-color: #2f9e44; padding: 6px 12px;">
+                                    <span style="color: white; font-size: ${baseSize * 0.7}px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        🌿 LINGKUNGAN
+                                    </span>
+                                </div>
+                                <div style="padding: 24px;">
+                                    <h3 style="font-family: ${titleFontStack}; font-size: ${baseSize * 1.3}px; font-weight: 700; color: ${textColor}; margin: 0 0 12px 0; line-height: 1.4;">
+                                        ${news2Title}
+                                    </h3>
+                                    <p style="font-size: ${baseSize * 0.95}px; color: ${textColor}; opacity: 0.75; line-height: 1.6; margin: 0;">
+                                        ${news2Description}
+                                    </p>
+                                    <a href="#" style="display: inline-block; margin-top: 16px; color: #2f9e44; font-size: ${baseSize * 0.9}px; font-weight: 600; text-decoration: none;" 
+                                       onmouseover="this.style.textDecoration='underline'" 
+                                       onmouseout="this.style.textDecoration='none'">
+                                        Selengkapnya →
+                                    </a>
+                                </div>
+                            </article>
+
+                            <!-- News Card 3 -->
+                            <article class="news-card" style="background-color: ${surfaceColor}; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                                <div style="background-color: #e8590c; padding: 6px 12px;">
+                                    <span style="color: white; font-size: ${baseSize * 0.7}px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        🏥 KESEHATAN
+                                    </span>
+                                </div>
+                                <div style="padding: 24px;">
+                                    <h3 style="font-family: ${titleFontStack}; font-size: ${baseSize * 1.3}px; font-weight: 700; color: ${textColor}; margin: 0 0 12px 0; line-height: 1.4;">
+                                        ${news3Title}
+                                    </h3>
+                                    <p style="font-size: ${baseSize * 0.95}px; color: ${textColor}; opacity: 0.75; line-height: 1.6; margin: 0;">
+                                        ${news3Description}
+                                    </p>
+                                    <a href="#" style="display: inline-block; margin-top: 16px; color: #e8590c; font-size: ${baseSize * 0.9}px; font-weight: 600; text-decoration: none;" 
+                                       onmouseover="this.style.textDecoration='underline'" 
+                                       onmouseout="this.style.textDecoration='none'">
+                                        Selengkapnya →
+                                    </a>
+                                </div>
+                            </article>
+                        </div>
+                    </main>
+
+                    <!-- Footer -->
+                    <footer style="background-color: ${textColor}; color: white; margin-top: 60px;">
+                        <div style="max-width: 1200px; margin: 0 auto; padding: 32px 20px; text-align: center;">
+                            <p style="font-size: ${baseSize * 0.9}px; margin: 0; opacity: 0.9;">
+                                © 2024 ${siteTitle}. Semua hak dilindungi undang-undang.
+                            </p>
+                            <p style="font-size: ${baseSize * 0.8}px; margin: 8px 0 0 0; opacity: 0.7;">
+                                Portal berita terpercaya untuk informasi terkini
+                            </p>
+                        </div>
+                    </footer>
+                </div>
+            `;
+        }
+
+        function mapToCapabilities(config) {
+            return {
+                recolorables: [
+                    {
+                        get: () => config.background_color || defaultConfig.background_color,
+                        set: (value) => {
+                            config.background_color = value;
+                            window.elementSdk.setConfig({ background_color: value });
+                        }
+                    },
+                    {
+                        get: () => config.surface_color || defaultConfig.surface_color,
+                        set: (value) => {
+                            config.surface_color = value;
+                            window.elementSdk.setConfig({ surface_color: value });
+                        }
+                    },
+                    {
+                        get: () => config.text_color || defaultConfig.text_color,
+                        set: (value) => {
+                            config.text_color = value;
+                            window.elementSdk.setConfig({ text_color: value });
+                        }
+                    },
+                    {
+                        get: () => config.primary_action_color || defaultConfig.primary_action_color,
+                        set: (value) => {
+                            config.primary_action_color = value;
+                            window.elementSdk.setConfig({ primary_action_color: value });
+                        }
+                    },
+                    {
+                        get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
+                        set: (value) => {
+                            config.secondary_action_color = value;
+                            window.elementSdk.setConfig({ secondary_action_color: value });
+                        }
+                    }
+                ],
+                borderables: [],
+                fontEditable: {
+                    get: () => config.font_family || defaultConfig.font_family,
+                    set: (value) => {
+                        config.font_family = value;
+                        window.elementSdk.setConfig({ font_family: value });
+                    }
+                },
+                fontSizeable: {
+                    get: () => config.font_size || defaultConfig.font_size,
+                    set: (value) => {
+                        config.font_size = value;
+                        window.elementSdk.setConfig({ font_size: value });
+                    }
+                }
+            };
+        }
+
+        function mapToEditPanelValues(config) {
+            return new Map([
+                ["site_title", config.site_title || defaultConfig.site_title],
+                ["tagline", config.tagline || defaultConfig.tagline],
+                ["headline_title", config.headline_title || defaultConfig.headline_title],
+                ["headline_description", config.headline_description || defaultConfig.headline_description],
+                ["news1_title", config.news1_title || defaultConfig.news1_title],
+                ["news1_description", config.news1_description || defaultConfig.news1_description],
+                ["news2_title", config.news2_title || defaultConfig.news2_title],
+                ["news2_description", config.news2_description || defaultConfig.news2_description],
+                ["news3_title", config.news3_title || defaultConfig.news3_title],
+                ["news3_description", config.news3_description || defaultConfig.news3_description]
+            ]);
+        }
+
+        if (window.elementSdk) {
+            window.elementSdk.init({
+                defaultConfig,
+                onConfigChange,
+                mapToCapabilities,
+                mapToEditPanelValues
+            });
+        }
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9bdc7530a3bfd439',t:'MTc2ODM4NjYyNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
